@@ -17,11 +17,11 @@ We need to update required configs [`remote_user`, `private_key_file` ] accordin
 [defaults]
 inventory = inventory/hosts
 #roles_path = roles
-remote_user = florence
+remote_user = flarence
 become_user = root
 become_method = sudo
 log_path = /tmp/ansible_pydash.log
-private_key_file = /home/florence/.ssh/id_rsa
+private_key_file = /home/flarence/.ssh/id_rsa
 roles_path    = roles
 deprecation_warnings=False
 
@@ -36,7 +36,7 @@ update inventory details in `inventory/hosts` file according to our remote serve
 ```bash
 #cat inventory/hosts
 [web]
-192.168.43.148 ansible_user=florence ansible_port=22
+192.168.43.148 ansible_user=flarence ansible_port=22
 ```
 
 #### Step 4 : Now test ssh connection.
@@ -50,7 +50,7 @@ ansible-playbook pyDash.yml
 if you get below output after executing `ansible-playbook test.yml`. it means we are able to ping or authenticate remote server.
 
 ```
-florence@DELL:~/Documents/workspace/ansible$ ansible-playbook test.yml
+flarence@DELL:~/Documents/workspace/ansible$ ansible-playbook test.yml
 
 PLAY [web] *******************************************************************************************************************************************
 
@@ -73,51 +73,51 @@ PLAY [Install PyDash - with Nginx Gunicorn and supervisor] *********************
 TASK [Gathering Facts] *******************************************************************************************************************************
 ok: [192.168.43.148]
 
-TASK [florence.PyDash : Installing dependant packages] ***************************************************************************************************
+TASK [flarence.PyDash : Installing dependant packages] ***************************************************************************************************
 ok: [192.168.43.148] => (item=[u'software-properties-common', u'unzip', u'nginx', u'python-pip', u'python-dev', u'python3-dev', u'build-essential', u'libpq-dev', u'virtualenv', u'virtualenvwrapper', u'supervisor', u'git'])
 
-TASK [florence.PyDash : Downloading PyDash] **************************************************************************************************************
+TASK [flarence.PyDash : Downloading PyDash] **************************************************************************************************************
 ok: [192.168.43.148]
 
-TASK [florence.PyDash : Create Custom 404 error page] ****************************************************************************************************
+TASK [flarence.PyDash : Create Custom 404 error page] ****************************************************************************************************
 changed: [192.168.43.148]
 
-TASK [florence.PyDash : Configure gunicorn_start script] *************************************************************************************************
+TASK [flarence.PyDash : Configure gunicorn_start script] *************************************************************************************************
 changed: [192.168.43.148]
 
-TASK [florence.PyDash : Configure nginx configs] *********************************************************************************************************
+TASK [flarence.PyDash : Configure nginx configs] *********************************************************************************************************
 changed: [192.168.43.148]
 
-TASK [florence.PyDash : remove sites-enabled/default] ****************************************************************************************************
+TASK [flarence.PyDash : remove sites-enabled/default] ****************************************************************************************************
 ok: [192.168.43.148]
 
-TASK [florence.PyDash : Configure Nginx site configs for PyDash as enabled] ******************************************************************************
+TASK [flarence.PyDash : Configure Nginx site configs for PyDash as enabled] ******************************************************************************
 changed: [192.168.43.148]
 
-TASK [florence.PyDash : Configure gunicorn configs for pydash] *******************************************************************************************
+TASK [flarence.PyDash : Configure gunicorn configs for pydash] *******************************************************************************************
 ok: [192.168.43.148]
 
-TASK [florence.PyDash : Create virtualenv for pydash.] ***************************************************************************************************
+TASK [flarence.PyDash : Create virtualenv for pydash.] ***************************************************************************************************
 ok: [192.168.43.148]
 
-TASK [florence.PyDash : Install Gunicorn for pydash.] ****************************************************************************************************
+TASK [flarence.PyDash : Install Gunicorn for pydash.] ****************************************************************************************************
 ok: [192.168.43.148] => (item=[u'gunicorn'])
 
-TASK [florence.PyDash : Setting Directory Permission for pydash.] ****************************************************************************************
+TASK [flarence.PyDash : Setting Directory Permission for pydash.] ****************************************************************************************
 changed: [192.168.43.148]
 
-TASK [florence.PyDash : Run below command to Create super users.] ****************************************************************************************
+TASK [flarence.PyDash : Run below command to Create super users.] ****************************************************************************************
 ok: [192.168.43.148] => {
     "msg": "source /var/www/html/PyDash/venv/bin/activate && /var/www/html/PyDash/venv/bin/python /var/www/html/PyDash/pydash/manage.py syncdb"
 }
 
-TASK [florence.PyDash : Initializing Python App - pydash] ************************************************************************************************
+TASK [flarence.PyDash : Initializing Python App - pydash] ************************************************************************************************
 changed: [192.168.43.148]
 
-RUNNING HANDLER [florence.PyDash : restart nginx] ********************************************************************************************************
+RUNNING HANDLER [flarence.PyDash : restart nginx] ********************************************************************************************************
 changed: [192.168.43.148]
 
-RUNNING HANDLER [florence.PyDash : restart supervisor] ***************************************************************************************************
+RUNNING HANDLER [flarence.PyDash : restart supervisor] ***************************************************************************************************
 changed: [192.168.43.148]
 
 PLAY RECAP *******************************************************************************************************************************************
@@ -128,21 +128,21 @@ PLAY RECAP *********************************************************************
 ##### Test application
 We need to make entry in `/etc/hosts` to test application on local server.
 ```bash
-192.168.43.148  florence.in www.florence.in
+192.168.43.148  flarence.in www.flarence.in
 ```
 
-now open http://florence.in or http://www.florence.in in your browser.
+now open http://flarence.in or http://www.flarence.in in your browser.
 
-`http://florence.in` >>  `http://www.florence.in/static/400.html ` </br>
-`http://www.florence.in`  >> `http://www.florence.in/login/?next=/` </br>
+`http://flarence.in` >>  `http://www.flarence.in/static/400.html ` </br>
+`http://www.flarence.in`  >> `http://www.flarence.in/login/?next=/` </br>
 
 **login details** </br>
-    - URL : http://www.florence.in/login/?next=/ </br>
+    - URL : http://www.flarence.in/login/?next=/ </br>
     - user : admin </br>
     - Pass: 123456 </br>
 
 
 ---
 Thanks</br>
-florence </br>
-Stay touch with us : https://florence.github.io
+flarence </br>
+Stay touch with us : https://flarence.github.io
