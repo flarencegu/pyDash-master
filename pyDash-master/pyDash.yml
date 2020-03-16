@@ -8,9 +8,9 @@
     python_app_name: pydash
     virtualenv_version: python2.7
     requirement_txt_path: "{{ python_app_dir }}/requirements.txt"
-    #domain_name: Florence.in
-    app_user: florence
-    app_user_group: florence
+    #domain_name: Flarence.in
+    app_user: flarence
+    app_user_group: flarence
     number_of_worker: '3'
 
     install_python_packages:
