@@ -1,0 +1,7 @@
+---
+
+- import_tasks: python-env-setup.yml
+  when: ansible_os_family == 'Debian'
+
+- import_tasks: python-migrations.yml
+  when: ansible_os_family == 'Debian'

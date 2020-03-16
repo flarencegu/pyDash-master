@@ -1,0 +1,4 @@
+# Here you can specify global variables which will available for all roles.
+
+web_app_name: "PyDash"
+domain_name: harrythedevopsguy.in

@@ -1,0 +1,6 @@
+---
+# Here you can define role based variables. which will available within role.
+web_directory: "/var/www/html/{{ web_app_name }}"
+repo_url: "https://gitlab.com/k3oni/pydash.git"
+venv: "{{ web_directory }}/venv"
+python_app_dir: "{{ web_directory }}/{{ python_app_name }}"

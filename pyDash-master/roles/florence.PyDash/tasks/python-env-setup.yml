@@ -1,0 +1,82 @@
+#MySql.server/tasks/main.yml
+---
+
+- name: Installing dependant packages
+  apt: name={{ item }} state=present force=yes update_cache=yes cache_valid_time=3600
+  become: yes
+  with_items: "{{ install_dependant_packages }}"
+
+- name: Downloading {{ web_app_name }}
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ python_app_dir }}"
+    version: master
+    update: yes
+
+- name: Create Custom 404 error page
+  template:
+    src=templates/404.html
+    dest={{ web_directory }}/{{ python_app_name }}/static/404.html
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0775
+
+- name: Configure gunicorn_start script
+  template:
+    src=templates/gunicorn_start.j2
+    dest={{ web_directory }}/gunicorn_start
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0775
+
+- name: Configure nginx configs
+  template:
+    src=templates/nginx_config.j2
+    dest=/etc/nginx/sites-available/{{ web_app_name }}
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0644
+
+- name: remove sites-enabled/default
+  file: path='/etc/nginx/sites-enabled/default' state=absent
+
+- name: Configure Nginx site configs for {{ web_app_name }} as enabled
+  file: src=/etc/nginx/sites-available/{{ web_app_name }} dest=/etc/nginx/sites-enabled/{{ web_app_name }} owner=www-data group=www-data state=link
+
+- name: Configure gunicorn configs for {{ python_app_name }}
+  template:
+    src=templates/gunicorn_config.j2
+    dest=/etc/supervisor/conf.d/{{ web_app_name }}_app.conf
+    owner={{ app_user }}
+    group={{ app_user_group }}
+    mode=0644
+
+
+- name: Create virtualenv for {{ python_app_name }}.
+  pip:
+    requirements: "{{ requirement_txt_path }}"
+    virtualenv: "{{ venv }}"
+    virtualenv_python: "{{ virtualenv_version }}"
+
+- name: Install Gunicorn for {{ python_app_name }}.
+  pip:
+    name: "{{ item }}"
+    virtualenv: "{{ venv }}"
+    virtualenv_python: "{{ virtualenv_version }}"
+  with_items: "{{ install_python_packages }}"
+
+- name: Setting Directory Permission for {{ python_app_name }}.
+  file:
+    dest: "{{ web_directory }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user_group }}"
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+  notify:
+    - restart supervisor
+    - restart nginx
+
+- name: Run below command to Create super users.
+  debug:
+    msg: "source {{ venv }}/bin/activate && {{ venv }}/bin/python {{ python_app_dir }}/manage.py syncdb"

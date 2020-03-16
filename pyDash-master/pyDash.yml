@@ -1,0 +1,35 @@
+# ansible/playbook/jenkins.yml
+---
+- name: Install PyDash - with Nginx Gunicorn and supervisor
+  hosts: web
+  #user: ubuntu
+  become: true
+  vars:
+    python_app_name: pydash
+    virtualenv_version: python2.7
+    requirement_txt_path: "{{ python_app_dir }}/requirements.txt"
+    #domain_name: Florence.in
+    app_user: florence
+    app_user_group: florence
+    number_of_worker: '3'
+
+    install_python_packages:
+      - gunicorn
+
+    install_dependant_packages:
+      - software-properties-common
+      - unzip
+      - nginx
+      - python-pip
+      - python-dev
+      - python3-dev
+      - build-essential
+      - libpq-dev
+      - virtualenv
+      - virtualenvwrapper
+      - supervisor
+      - git
+
+
+  roles:
+      - Florence.PyDash

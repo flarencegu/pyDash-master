@@ -1,0 +1,16 @@
+# This will use to deploy Python Application
+---
+
+- name: Initializing Python App - {{ python_app_name }}
+  shell: |
+      source {{ venv }}/bin/activate
+      cd {{ python_app_dir }}
+      rm -rf {{ web_directory }}/piplist.txt
+      {{ venv }}/bin/pip list >> {{ web_directory }}/piplist.txt
+      {{ venv }}/bin/python {{ python_app_dir }}/manage.py syncdb --noinput
+      echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@harrythedevopsguy.in', '123456')" | {{ venv }}/bin/python {{ python_app_dir }}/manage.py shell
+
+
+  notify:
+    - restart supervisor
+    - restart nginx
